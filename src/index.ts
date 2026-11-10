@@ -448,7 +448,7 @@ const MESSAGE_LINES = [
   '',
   'Happy Birthday!! 親ビン',
   '',
-  'Happy Birthday!! 親ビン',
+  '',
   'ラスト20代楽しんでください🙇',
   '',
 ]
