@@ -1,6 +1,6 @@
 {
   "name": "hpbdd",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A console birthday card for Boss",
   "type": "module",
   "bin": {
