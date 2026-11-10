@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Install deps
+        run: nix develop --command pnpm install --frozen-lockfile
+
+      - name: Build
+        run: nix develop --command pnpm build
+
+      - name: Pack
+        run: |
+          nix develop --command pnpm pack --pack-destination .
+          mv hpbdd-*.tgz hpbdd.tgz
+
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          cat > release-notes.md <<EOF
+          Install & run:
+
+          \`\`\`sh
+          npx https://github.com/${REPO}/releases/latest/download/hpbdd.tgz
+          \`\`\`
+          EOF
+          gh release create "$TAG" \
+            hpbdd.tgz \
+            --title "$TAG" \
+            --notes-file release-notes.md \
+            --latest

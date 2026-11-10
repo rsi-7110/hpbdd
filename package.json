@@ -1,0 +1,31 @@
+{
+  "name": "hpbdd",
+  "version": "1.0.0",
+  "description": "A console birthday card for Boss",
+  "type": "module",
+  "bin": {
+    "hpbdd": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "start": "node dist/index.mjs",
+    "typecheck": "tsc",
+    "prepublishOnly": "pnpm typecheck && pnpm build"
+  },
+  "keywords": [
+    "birthday",
+    "cli",
+    "console"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsdown": "^0.21.6",
+    "typescript": "^6.0.3"
+  }
+}
